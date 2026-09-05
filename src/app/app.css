@@ -71,6 +71,22 @@
   color: #312e81;
 }
 
+.auth-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.secondary-auth-button {
+  background: rgba(99, 102, 241, 0.08);
+  color: #3730a3;
+}
+
 .content-shell {
   max-width: 1200px;
   margin: 0 auto;

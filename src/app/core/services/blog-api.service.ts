@@ -9,28 +9,43 @@ import { BlogDto, BlogPageResult, BlogRequestDto, PagedResultDto } from '../mode
   providedIn: 'root',
 })
 export class BlogApiService {
-  private readonly apiBaseUrl = `${appConfiguration.apiBaseUrl}api/Blogs`;
+  private readonly blogsEndpoint = new URL(
+    appConfiguration.apiPaths.blogs,
+    appConfiguration.apiBaseUrl,
+  ).toString();
+  private readonly myBlogsEndpoint = new URL(
+    appConfiguration.apiPaths.myBlogs,
+    appConfiguration.apiBaseUrl,
+  ).toString();
 
   constructor(private readonly http: HttpClient) {}
 
   getPublicBlogs(pageNumber: number, pageSize: number): Observable<BlogPageResult> {
-    return this.getPagedBlogs(`${this.apiBaseUrl}`, pageNumber, pageSize);
+    return this.getPagedBlogs(this.blogsEndpoint, pageNumber, pageSize);
   }
 
   getMyBlogs(pageNumber: number, pageSize: number): Observable<BlogPageResult> {
-    return this.getPagedBlogs(`${this.apiBaseUrl}/my`, pageNumber, pageSize);
+    return this.getPagedBlogs(this.myBlogsEndpoint, pageNumber, pageSize);
   }
 
   createBlog(blog: BlogRequestDto): Observable<BlogDto> {
-    return this.http.post<BlogDto>(this.apiBaseUrl, blog);
+    return this.http.post<BlogDto>(this.blogsEndpoint, blog);
   }
 
   updateBlog(id: string, blog: BlogRequestDto): Observable<BlogDto> {
-    return this.http.put<BlogDto>(`${this.apiBaseUrl}/${id}`, blog);
+    return this.http.put<BlogDto>(this.blogUrl(id), blog);
   }
 
   deleteBlog(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiBaseUrl}/${id}`);
+    return this.http.delete<void>(this.blogUrl(id));
+  }
+
+  private blogUrl(id: string): string {
+    const endpoint = this.blogsEndpoint.endsWith('/')
+      ? this.blogsEndpoint
+      : `${this.blogsEndpoint}/`;
+
+    return new URL(encodeURIComponent(id), endpoint).toString();
   }
 
   private getPagedBlogs(

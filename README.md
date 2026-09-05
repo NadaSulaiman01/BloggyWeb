@@ -57,3 +57,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Application configuration
+
+Update [app-config.ts](src/app/core/config/app-config.ts) when changing the API URL, blog endpoints, Keycloak server, realm, client ID, redirect paths, or token refresh timeout. The application uses this file for Keycloak initialization, bearer-token interception, and blog API requests.

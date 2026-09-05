@@ -9,7 +9,13 @@
 
   <nav class="nav" aria-label="Main navigation">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a routerLink="/my-blogs" routerLinkActive="active">My blogs</a>
+    @if (auth.isAuthenticated()) {
+      <a routerLink="/my-blogs" routerLinkActive="active">My blogs</a>
+      <button type="button" class="auth-button" (click)="auth.logout()">Log out</button>
+    } @else {
+      <button type="button" class="auth-button" (click)="auth.login()">Log in</button>
+      <button type="button" class="auth-button secondary-auth-button" (click)="auth.register()">Sign up</button>
+    }
   </nav>
 </header>
 
