@@ -1,40 +1,52 @@
 <section class="page-shell">
-  <header class="hero">
-    <p class="eyebrow">Community stories</p>
-    <h1>Read what people are sharing today</h1>
-    <p class="subtitle">Explore recent blog posts from the community and discover ideas worth reading.</p>
-  </header>
+    <header class="hero">
+        <p class="eyebrow">Community stories</p>
+        <h1>Read what people are sharing today</h1>
+        <p class="subtitle">Explore recent blog posts from the community and discover ideas worth reading.</p>
+    </header>
 
-  <div *ngIf="isLoading" class="status-panel">
-    Loading blogs...
-  </div>
+    @if(isLoading) {
+    <div class="status-panel">Loading blogs...</div>
+    }
 
-  <div *ngIf="errorMessage" class="status-panel error-panel">
-    {{ errorMessage }}
-  </div>
+    @if (errorMessage) {
+        <div class="status-panel error-panel">
+            {{errorMessage}}
+        </div>
+    }
 
-  <div *ngIf="!isLoading && blogs.length === 0 && !errorMessage" class="empty-state">
-    <h2>No posts available yet</h2>
-    <p>Be the first to share an article with the community.</p>
-  </div>
 
-  <div *ngIf="!isLoading && blogs.length > 0" class="blog-list">
-    <article *ngFor="let blog of blogs" class="blog-item">
-        <div class="blog-item-copy">
-            <span class="card-tag">Shared post</span>
-            <h3>{{ blog.title }}</h3>
-            <p>{{ blog.content }}</p>
-      </div>
-    </article>
-  </div>
+    @if (!isLoading && blogs.length === 0 && !errorMessage) {
+    <div class="empty-state">
+        <h2>No posts available yet</h2>
+        <p>Be the first to share an article with the community.</p>
+    </div>
+    }
 
-  <nav *ngIf="!isLoading && blogs.length > 0" class="pagination" aria-label="Blog pagination">
-    <button type="button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">
-      Previous
-    </button>
-    <span>Page {{ currentPage }} of {{ totalPages }}</span>
-    <button type="button" (click)="goToNextPage()" [disabled]="currentPage >= totalPages">
-      Next
-    </button>
-  </nav>
+    @if(!isLoading && blogs.length > 0) {
+    <div class="blog-list">
+        @for (blog of blogs; track $index) {
+        <article class="blog-item">
+            <div class="blog-item-copy">
+                <span class="card-tag">Shared post</span>
+                <h3>{{ blog.title }}</h3>
+                <p>{{ blog.content }}</p>
+            </div>
+        </article>
+        }
+    </div>
+    }
+
+    @if(!isLoading && blogs.length > 0) {
+    <nav class="pagination" aria-label="Blog pagination">
+        <button type="button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">
+            Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button type="button" (click)="goToNextPage()" [disabled]="currentPage >= totalPages">
+            Next
+        </button>
+    </nav>
+    }
+
 </section>
